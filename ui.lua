@@ -825,7 +825,7 @@ do
                 local notify_frame = utility:Create("Frame", {Vector2.new(1, 1), notify_inline}, {
                     Size = utility:Size(1, -2, 1, -2, notify_inline),
                     Position = utility:Position(0, 1, 0, 1, notify_inline),
-                    Color = theme.light_contrast,
+                    Color = theme.lightcontrast,
                     ZIndex = 3,
                     Transparency = 0,
                     Hidden = true,
@@ -876,7 +876,12 @@ do
                 window.notificationlist.notifications[#window.notificationlist.notifications + 1] = notification
                 --
                 local function began_function(Input)
-                    if Input.UserInputType == Enum.UserInputType.MouseButton1 and utility:MouseOverDrawingInstance(notify_outline) and not notification.pressed then
+                    if Input.UserInputType == Enum.UserInputType.MouseButton1 and utility:MouseOverDrawing({
+                        notify_outline.Position.X,
+                        notify_outline.Position.Y,
+                        notify_outline.Position.X + notify_outline.Size.X,
+                        notify_outline.Position.Y + notify_outline.Size.Y
+                        }) and not notification.pressed then
                         notification.Remove()
                     end
                 end
@@ -885,7 +890,12 @@ do
                 --
                 local function changed_function(Input)
                     if Input.UserInputType == Enum.UserInputType.MouseMovement and not notification.pressed then
-                        if utility:MouseOverDrawingInstance(notify_outline) then
+                        if utility:MouseOverDrawing({
+                            notify_outline.Position.X,
+                            notify_outline.Position.Y,
+                            notify_outline.Position.X + notify_outline.Size.X,
+                            notify_outline.Position.Y + notify_outline.Size.Y
+                            }) then
                             local h, s, v = theme.accent:ToHSV()
                             notify_inline.Color = Color3.fromHSV(h, 0.44, v)
                         else
